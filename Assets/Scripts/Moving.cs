@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class Moving : MonoBehaviour
 {
-    [SerializeField] int index;
+    [SerializeField] UI uI;
+    [SerializeField] int spriteIndex;
     public Collider2D touchCollider;
     public Transform target;
     Vector2 mouseWorld;
@@ -13,64 +14,60 @@ public class Moving : MonoBehaviour
     [SerializeField] GameObject prefap;
     public List<Sprite> sprites;
     public List<Sprite> spritesUI;
-    int spriteIndex;
-    GameObject pref;
+    GameObject clonePref;
 
     private void Start()
     {
         spritesUI = sprites;
-        index = Random.Range(0, 4);
+        spriteIndex = Random.Range(0, 4);
         SpriteCount();
     }
 
     void Update()
     {
-        if (!touchCollider || !target) return;
-
-         mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+        if (!touchCollider || !target || uI.time != 1f) return;
+        if (Input.GetMouseButton(0))
+        {
+            mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
         if (Input.GetMouseButtonDown(0))
         {
             if (touchCollider.OverlapPoint(mouseWorld))
                 dragging = true;
         }
-        if (Input.GetMouseButton(0) && dragging)
+        if (dragging)
         {
             Vector2 contactPoint = touchCollider.ClosestPoint(mouseWorld);
-
             target.position = new Vector3( contactPoint.x,target.position.y,target.position.z);
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && dragging)
         {
             dragging = false;
-           if(pref !=null)
+            if(clonePref !=null)
             {
-                pref.transform.SetParent(null);
-                pref.GetComponent<Rigidbody2D>().simulated = true;
+                clonePref.transform.SetParent(null);
+                clonePref.GetComponent<Rigidbody2D>().simulated = true;
             }
             StopAllCoroutines();
             StartCoroutine(RandomSprites());
-
-        }
-            
+        } 
     }
     
-
     public void SpriteCount()
     {
         spritesUI = new List<Sprite>(sprites);
 
-        pref = Instantiate(prefap, target.position, Quaternion.identity, target);
-        pref.GetComponent<SpriteRenderer>().sprite = sprites[index];
-        pref.GetComponent<Rigidbody2D>().simulated = false;
+        clonePref = Instantiate(prefap, target.position, Quaternion.identity, target);
+        clonePref.GetComponent<SpriteRenderer>().sprite = sprites[spriteIndex];
+        clonePref.GetComponent<Rigidbody2D>().simulated = false;
 
-        Sprite selected = sprites[index];
-        sprites.RemoveAt(index);
+        Sprite selected = sprites[spriteIndex];
+        sprites.RemoveAt(spriteIndex);
         sprites.Add(selected);
     }
     IEnumerator  RandomSprites()
     {
-        index = Random.Range(0, 4);
+        spriteIndex = Random.Range(0, 4);
         yield return new WaitForSeconds(1f);
         SpriteCount();
     }
