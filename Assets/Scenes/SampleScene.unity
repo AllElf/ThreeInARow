@@ -158,7 +158,7 @@ MonoBehaviour:
   - {fileID: 500328289}
   - {fileID: 1790040066}
   - {fileID: 1457794563}
-  moving: {fileID: 1655180546}
+  scriptManager: {fileID: 1655180548}
   isPause: 0
   panelPause: {fileID: 1091859244}
   time: 1
@@ -1949,7 +1949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1655180547}
-  - component: {fileID: 1655180546}
+  - component: {fileID: 1655180548}
   m_Layer: 0
   m_Name: ScriptManager
   m_TagString: Untagged
@@ -1957,34 +1957,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1655180546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1655180545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed81c8ad5458e96478fc0ebeab14b53e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Moving
-  uI: {fileID: 89255789}
-  index: 0
-  touchCollider: {fileID: 278831494}
-  target: {fileID: 2097651119}
-  prefap: {fileID: 4155795702853614615, guid: 3c8b0bf901ffce14d931b8fcc51daaef, type: 3}
-  sprites:
-  - {fileID: 7175521830830924091, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: 1991129475, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: -1467930012, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: -1958925237, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: -569160529, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: -1529386812, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: -437601235, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: 350074242, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  - {fileID: -1887798327, guid: ff5a02797a856af46977cd188b94f979, type: 3}
-  spritesUI: []
 --- !u!4 &1655180547
 Transform:
   m_ObjectHideFlags: 0
@@ -2000,6 +1972,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1655180548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655180545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8984a820263b4244a8798ca4347e8189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptManager
+  uI: {fileID: 89255789}
+  spriteIndex: 0
+  touchCollider: {fileID: 278831494}
+  target: {fileID: 2097651119}
+  prefap: {fileID: 4155795702853614615, guid: 3c8b0bf901ffce14d931b8fcc51daaef, type: 3}
+  sprites:
+  - {fileID: 7175521830830924091, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: 1991129475, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: -1467930012, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: -1958925237, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: -569160529, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: -1529386812, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: -437601235, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: 350074242, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  - {fileID: -1887798327, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  spritesUI: []
 --- !u!1 &1764952318
 GameObject:
   m_ObjectHideFlags: 0

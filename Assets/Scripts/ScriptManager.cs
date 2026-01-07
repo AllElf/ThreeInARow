@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Moving : MonoBehaviour
+public class ScriptManager : MonoBehaviour
 {
     [SerializeField] UI uI;
     [SerializeField] int spriteIndex;
@@ -38,21 +37,21 @@ public class Moving : MonoBehaviour
         if (dragging)
         {
             Vector2 contactPoint = touchCollider.ClosestPoint(mouseWorld);
-            target.position = new Vector3( contactPoint.x,target.position.y,target.position.z);
+            target.position = new Vector3(contactPoint.x, target.position.y, target.position.z);
         }
         if (Input.GetMouseButtonUp(0) && dragging)
         {
             dragging = false;
-            if(clonePref !=null)
+            if (clonePref != null)
             {
                 clonePref.transform.SetParent(null);
                 clonePref.GetComponent<Rigidbody2D>().simulated = true;
             }
             StopAllCoroutines();
             StartCoroutine(RandomSprites());
-        } 
+        }
     }
-    
+
     public void SpriteCount()
     {
         spritesUI = new List<Sprite>(sprites);
@@ -65,12 +64,10 @@ public class Moving : MonoBehaviour
         sprites.RemoveAt(spriteIndex);
         sprites.Add(selected);
     }
-    IEnumerator  RandomSprites()
+    IEnumerator RandomSprites()
     {
         spriteIndex = Random.Range(0, 4);
         yield return new WaitForSeconds(1f);
         SpriteCount();
     }
-
-
 }

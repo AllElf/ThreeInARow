@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class TriggerObject : MonoBehaviour
 {
+    //[SerializeField] ScriptManager manager;
     [SerializeField]private Sprite _sprite;
     [SerializeField] Vector3 scale = new Vector2(0.64f, 0.64f);
     private void Start()
     {
+        //manager = FindAnyObjectByType<ScriptManager>();
         _sprite = GetComponent<SpriteRenderer>().sprite;
     }
 

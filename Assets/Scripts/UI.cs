@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour
 {
     [SerializeField] public List<GameObject> spritesUI;
-    [SerializeField] Moving moving;
+    [SerializeField] ScriptManager scriptManager;
     [SerializeField] bool isPause = false;
     [SerializeField] GameObject panelPause;
     public float time;
@@ -21,7 +21,7 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < spritesUI.Count; i++)
         {
-            spritesUI[i].GetComponent<Image>().sprite = moving.spritesUI[i];
+            spritesUI[i].GetComponent<Image>().sprite = scriptManager.spritesUI[i];
             //spritesUI[i].GetComponent<Image>().sprite = moving.spritesUI[i].sprite;
         }
     }
