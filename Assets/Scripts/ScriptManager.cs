@@ -1,24 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[System.Serializable]
+public class IndexSprite
+{
+    public int index;
+    public Sprite sprite;
+}
 public class ScriptManager : MonoBehaviour
 {
     [SerializeField] UI uI;
-    [SerializeField] int spriteIndex;
+    public int spriteCurrentIndex;
     public Collider2D touchCollider;
     public Transform target;
     Vector2 mouseWorld;
     private bool dragging;
     [SerializeField] GameObject prefap;
-    public List<Sprite> sprites;
-    public List<Sprite> spritesUI;
+
+    public List<IndexSprite> indexSprite = new List<IndexSprite>();
+
+    //public List<Sprite> sprites;
+    public List<GameObject> sprites;
+    public Sprite currentSprite;
     GameObject clonePref;
 
     private void Start()
     {
-        spritesUI = sprites;
-        spriteIndex = Random.Range(0, 4);
+        for (int i = 0; i < sprites.Count; i++)
+        {
+            indexSprite.Add(new IndexSprite { index = i, sprite = sprites[i].GetComponent<Image>().sprite });
+        }
+        spriteCurrentIndex = Random.Range(0, 4);
         SpriteCount();
     }
 
@@ -54,19 +68,24 @@ public class ScriptManager : MonoBehaviour
 
     public void SpriteCount()
     {
-        spritesUI = new List<Sprite>(sprites);
+        //for(int i = 0; i < indexSprite.Count; i++)
+        //{
+        //    spritesUI[i] = indexSprite[i].sprite;
+        //}
 
         clonePref = Instantiate(prefap, target.position, Quaternion.identity, target);
-        clonePref.GetComponent<SpriteRenderer>().sprite = sprites[spriteIndex];
+        clonePref.GetComponent<SpriteRenderer>().sprite = currentSprite;
         clonePref.GetComponent<Rigidbody2D>().simulated = false;
 
-        Sprite selected = sprites[spriteIndex];
-        sprites.RemoveAt(spriteIndex);
-        sprites.Add(selected);
+        //IndexSprite elementAdd = indexSprite[spriteCurrentIndex];
+        //indexSprite.RemoveAt(spriteCurrentIndex);
+        //indexSprite.Add(elementAdd);
     }
     IEnumerator RandomSprites()
     {
-        spriteIndex = Random.Range(0, 4);
+        
+        spriteCurrentIndex = Random.Range(0, 4);
+        currentSprite = indexSprite[Random.Range(0, indexSprite.Count)].sprite;
         yield return new WaitForSeconds(1f);
         SpriteCount();
     }

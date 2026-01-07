@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class TriggerObject : MonoBehaviour
 {
-    //[SerializeField] ScriptManager manager;
+    [SerializeField] ScriptManager manager;
     [SerializeField]private Sprite _sprite;
-    [SerializeField] Vector3 scale = new Vector2(0.64f, 0.64f);
+    [SerializeField] Vector3 scale = new Vector2(1f, 1f);
     private void Start()
     {
-        //manager = FindAnyObjectByType<ScriptManager>();
+        manager = FindAnyObjectByType<ScriptManager>();
         _sprite = GetComponent<SpriteRenderer>().sprite;
     }
 
@@ -18,6 +18,7 @@ public class TriggerObject : MonoBehaviour
         {
             Destroy(collision.gameObject);
             gameObject.transform.localScale = scale; 
+            gameObject.GetComponent<SpriteRenderer>().sprite = manager.currentSprite;
         }
     }
 }

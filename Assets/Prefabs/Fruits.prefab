@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5471774456287174502}
   - component: {fileID: 7379869764469415266}
   m_Layer: 0
-  m_Name: Apple
+  m_Name: Fruits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7175521830830924091, guid: ff5a02797a856af46977cd188b94f979, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -169,3 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09910e1351779bf4bb0db226010b53bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerObject
+  _sprite: {fileID: 0}
+  scale: {x: 0.64, y: 0.64, z: 0}
