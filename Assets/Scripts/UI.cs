@@ -5,23 +5,32 @@ using UnityEngine.SceneManagement;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] public List<GameObject> spritesUI;
+    [Header("Ссылки")]
     [SerializeField] ScriptManager scriptManager;
-    [SerializeField] bool isPause = false, isMusic = true;
-    [SerializeField] GameObject panelPause;
     [SerializeField] AudioListener audioListener;
     [SerializeField] AudioSource music;
+
+    [Header("Логические переменные")]
+    [SerializeField] bool isPause = false;
+    [SerializeField] bool isMusic = true;
+    bool isActive;
+
+    [Header("Свойство и настройка панели паузы")]
+    [SerializeField] GameObject panelPause;
+    public float time;
+   
 
     [Header("Кнопки")]
     [SerializeField] GameObject buttonMenu;
     [SerializeField] GameObject buttonRestart;
     [SerializeField] GameObject buttonContinue;
-    public float time;
-    bool isActive;
+   
 
     private void Start()
     {
+        scriptManager = FindAnyObjectByType<ScriptManager>();
         audioListener = FindAnyObjectByType<AudioListener>();
+        music = GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>();
         isActive = true;
         OneStrtAction();
         Pausa();   
@@ -47,17 +56,9 @@ public class UI : MonoBehaviour
     private void Update()
     {
         Time.timeScale = time;
-        //SpriteCycle();
         OrientationView();
         PanelActive();
     }
-    //public void SpriteCycle()
-    //{
-    //    for (int i = 0; i < spritesUI.Count; i++)
-    //    {
-    //        spritesUI[i].GetComponent<Image>().sprite = scriptManager.spritesUI[i];
-    //    }
-    //}
     public void Pausa()
     {
         isPause = true;
@@ -83,7 +84,7 @@ public class UI : MonoBehaviour
             time = 1f;
         }
     }
-    public void OrientationView()
+    private void OrientationView()
     {
         if (Screen.orientation == ScreenOrientation.LandscapeLeft ||Screen.orientation == ScreenOrientation.LandscapeRight) //Горизонтальная ориентация
         {

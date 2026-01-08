@@ -7,32 +7,35 @@ using UnityEngine.UI;
 public class IndexSprite
 {
     public int index;
-    public Sprite sprite;
+    public Image image;
+    public Vector3 scale;
 }
 public class ScriptManager : MonoBehaviour
 {
+    [Header("Ссылка на UI")]
     [SerializeField] UI uI;
-    public int spriteCurrentIndex;
+
+    [Header("Настройки передвижения ")]
     public Collider2D touchCollider;
     public Transform target;
     Vector2 mouseWorld;
     private bool dragging;
+
+    [Header("Настройки клона")]
     [SerializeField] GameObject prefap;
-
-    public List<IndexSprite> indexSprite = new List<IndexSprite>();
-
-    //public List<Sprite> sprites;
-    public List<GameObject> sprites;
     public Sprite currentSprite;
     GameObject clonePref;
 
+    [Header("Индексирование")]
+    public int currentIndex;
+    public int countTrigger;
+
+    [Header("Список объектов с параметрами")]
+    public List<IndexSprite> indexSprite = new List<IndexSprite>();
+
     private void Start()
     {
-        for (int i = 0; i < sprites.Count; i++)
-        {
-            indexSprite.Add(new IndexSprite { index = i, sprite = sprites[i].GetComponent<Image>().sprite });
-        }
-        spriteCurrentIndex = Random.Range(0, 4);
+        currentIndex = Random.Range(0, 4);
         SpriteCount();
     }
 
@@ -68,25 +71,33 @@ public class ScriptManager : MonoBehaviour
 
     public void SpriteCount()
     {
-        //for(int i = 0; i < indexSprite.Count; i++)
-        //{
-        //    spritesUI[i] = indexSprite[i].sprite;
-        //}
-
         clonePref = Instantiate(prefap, target.position, Quaternion.identity, target);
-        clonePref.GetComponent<SpriteRenderer>().sprite = currentSprite;
+        clonePref.transform.localScale = indexSprite[currentIndex].scale;
+        clonePref.GetComponent<TriggerObject>()._sprite = indexSprite[currentIndex].image.sprite;
+        clonePref.GetComponent<TriggerObject>()._index = indexSprite[currentIndex].index;
         clonePref.GetComponent<Rigidbody2D>().simulated = false;
-
-        //IndexSprite elementAdd = indexSprite[spriteCurrentIndex];
-        //indexSprite.RemoveAt(spriteCurrentIndex);
-        //indexSprite.Add(elementAdd);
     }
     IEnumerator RandomSprites()
     {
-        
-        spriteCurrentIndex = Random.Range(0, 4);
-        currentSprite = indexSprite[Random.Range(0, indexSprite.Count)].sprite;
+        currentIndex = Random.Range(0, 4);
         yield return new WaitForSeconds(1f);
         SpriteCount();
     }
+    public void Distribution()
+    {
+        countTrigger++;
+    }
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (indexSprite == null) return;
+
+        for (int i = 0; i < indexSprite.Count; i++)
+        {
+            if (indexSprite[i] != null)
+                indexSprite[i].index = i;
+        }
+    }
+#endif
+
 }

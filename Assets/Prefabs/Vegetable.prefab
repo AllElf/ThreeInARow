@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5471774456287174502}
   - component: {fileID: 7379869764469415266}
   m_Layer: 0
-  m_Name: Fruits
+  m_Name: Vegetable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.4676, y: 0.442, z: 0}
-  m_LocalScale: {x: 0.23102, y: 0.23102, z: 0.23102}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7175521830830924091, guid: ff5a02797a856af46977cd188b94f979, type: 3}
+  m_Sprite: {fileID: 7211889633344492365, guid: fd0b10e1e8bb11149890bcd4532583a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,7 +129,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.32
+  m_Radius: 0.16
 --- !u!50 &5471774456287174502
 Rigidbody2D:
   serializedVersion: 5
@@ -170,4 +170,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerObject
   _sprite: {fileID: 0}
-  scale: {x: 0.64, y: 0.64, z: 0}
+  scale: {x: 2, y: 2, z: 0}
