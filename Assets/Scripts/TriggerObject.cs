@@ -37,21 +37,12 @@ public class TriggerObject : MonoBehaviour
         }
         other = collision.gameObject.GetComponent<TriggerObject>();
         if (!other) return;
-        Test();
+        Trigger();
     }
 
-    private void OnCollisionStay2D(Collision2D collision) // исправляем на 2D
-    {
-        if (collision.gameObject.tag == "GameOverTrigger")
-        {
-            manager.GameOver();
-        }
-        other = collision.gameObject.GetComponent<TriggerObject>();
-        if (!other) return;
-        Test();
-    }
 
-    void Test()
+
+    void Trigger()
     {
         if (other == null || other.gameObject == null) return;
         if (other._index != _index) return;

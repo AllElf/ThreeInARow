@@ -28,7 +28,6 @@ public class ScriptManager : MonoBehaviour
 
     [Header("Настройки клона")]
     [SerializeField] GameObject prefap;
-    public Sprite currentSprite;
     GameObject clonePref;
 
     [Header("Индексирование")]
@@ -53,6 +52,7 @@ public class ScriptManager : MonoBehaviour
 
     private void Start()
     {
+        uI = FindAnyObjectByType<UI>();
         audioMixer = Resources.Load<AudioMixer>("Main");
         currentIndex = Random.Range(0, 4);
         SpriteCount();
@@ -60,6 +60,7 @@ public class ScriptManager : MonoBehaviour
 
     void Update()
     {
+        if (uI == null) return;
         if (!touchCollider || !target || uI.time != 1f) return;
         if (Input.GetMouseButton(0))
         {
@@ -112,7 +113,7 @@ public class ScriptManager : MonoBehaviour
         if (ishearing)
         {
             audioMixer.SetFloat("Main", 0f);
-            if (uI.buttonSound != null)
+            if (uI != null && uI.buttonSound != null)
             {
                 uI.buttonSound.GetComponentInChildren<Text>().text = "Звук Вкл";
             }
@@ -120,7 +121,7 @@ public class ScriptManager : MonoBehaviour
         else
         {
             audioMixer.SetFloat("Main", -80f);
-            if (uI.buttonSound != null)
+            if (uI != null && uI.buttonSound != null)
             {
                 uI.buttonSound.GetComponentInChildren<Text>().text = "Звук Выкл";
             }
@@ -131,14 +132,18 @@ public class ScriptManager : MonoBehaviour
         if (gameOver == null) return;
         if (gameOver.isPlaying) return;
         gameOver.Play();
-        uI.Pausa();
-        uI.GameOverPanel();
+        if(uI != null)
+        {
+            uI.Pausa();
+            uI.GameOverPanel();
+        }
     }
 
    
 
     public void SpriteCount()
     {
+        if (prefap == null) return;
         clonePref = Instantiate(prefap, target.position, Quaternion.identity, target);
         clonePref.transform.localScale = indexSprite[currentIndex].scale;
         clonePref.GetComponent<TriggerObject>()._sprite = indexSprite[currentIndex].image.sprite;

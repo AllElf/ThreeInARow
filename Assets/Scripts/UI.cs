@@ -6,6 +6,7 @@ public class UI : MonoBehaviour
 {
     [Header("Ссылки")]
     [SerializeField] ScriptManager scriptManager;
+    [SerializeField] Camera cam;
 
     [Header("Визуализация счёта")]
     [SerializeField] Text text;
@@ -34,6 +35,7 @@ public class UI : MonoBehaviour
 
     private void Awake()
     {
+        cam = Camera.main;
         ObjectFind();
     }
     private void Start()
@@ -129,15 +131,20 @@ public class UI : MonoBehaviour
     {
         if (Screen.orientation == ScreenOrientation.LandscapeLeft ||Screen.orientation == ScreenOrientation.LandscapeRight) //Горизонтальная ориентация
         {
-            Camera.main.orthographicSize = 4.3f;
-            panelPause.transform.localScale =  new Vector3(1f,1f,1f);
+            if(panelPause != null && cam != null)
+            {
+                cam.orthographicSize = 4.3f;
+                panelPause.transform.localScale = new Vector3(1f, 1f, 1f);
+            }
         }
         else if (Screen.orientation == ScreenOrientation.Portrait || Screen.orientation == ScreenOrientation.PortraitUpsideDown) // Вертикальная ориентация
         {
-            Camera.main.orthographicSize = 6;
-            panelPause.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+            if (panelPause != null && cam != null)
+            {
+                cam.orthographicSize = 6;
+                panelPause.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+            }    
         }
-
     }
 
     
