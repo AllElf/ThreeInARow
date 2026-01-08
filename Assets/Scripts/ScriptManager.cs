@@ -96,7 +96,6 @@ public class ScriptManager : MonoBehaviour
             dragging = false;
             if (clonePref != null)
             { 
-                BallDrop();
                 clonePref.transform.SetParent(null);
                 clonePref.GetComponent<Rigidbody2D>().simulated = true;
                 clonePref.GetComponent<CircleCollider2D>().isTrigger = false;
@@ -121,6 +120,7 @@ public class ScriptManager : MonoBehaviour
     }
     IEnumerator RandomSprites()
     {
+        BallDrop();
         isCorutine = true;
         yield return new WaitForSeconds(1f);
         currentIndex = Random.Range(0, 4);
