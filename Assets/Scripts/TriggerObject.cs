@@ -4,13 +4,18 @@ public class TriggerObject : MonoBehaviour
 {
     [Header("Ссылка")]
     [SerializeField] ScriptManager manager;
+    
     [Header("Настройки спрайта")]
     public Sprite _sprite;
     SpriteRenderer rendererSprite;
     [Header("Внутренняя и наружная индексация")]
     public int _index; 
     public int internalIndex;
-    
+    [Header("Бонус за овощ")]
+    public int bonus;
+   
+
+
     private void Start()
     {
         manager = FindAnyObjectByType<ScriptManager>();
@@ -25,18 +30,26 @@ public class TriggerObject : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "GameOverTrigger")
+        {
+            Debug.Log("Конец Игры");
+            manager.GameOver();
+        }
         TriggerObject other = collision.gameObject.GetComponent<TriggerObject>();
         if (!other) return;
 
         if (other._index != _index) return;
         manager.Distribution();
         internalIndex = manager.countTrigger;
-        if(other.internalIndex < internalIndex)
+        manager.BallConnection();
+        if (other.internalIndex < internalIndex)
         {
+            manager.countCoin += other.bonus;
             Destroy(other.gameObject);
         }
         else
         {
+            manager.countCoin += bonus;
             Destroy(gameObject);
         }
         //gameObject.transform.localScale = scale;
@@ -49,18 +62,25 @@ public class TriggerObject : MonoBehaviour
     }
     private void OnCollisionStay(Collision collision)
     {
+        if(collision.gameObject.tag == "GameOverTrigger")
+        {
+            Debug.Log("Конец Игры");
+        }
         TriggerObject other = collision.gameObject.GetComponent<TriggerObject>();
         if (!other) return;
 
         if (other._index != _index) return;
         //manager.Distribution();
         internalIndex = manager.countTrigger;
+        manager.BallConnection();
         if (other.internalIndex < internalIndex)
         {
+            manager.countCoin += other.bonus;
             Destroy(other.gameObject);
         }
         else
         {
+            manager.countCoin += bonus;
             Destroy(gameObject);
         }
         _index++;
@@ -70,4 +90,5 @@ public class TriggerObject : MonoBehaviour
             gameObject.transform.localScale = manager.indexSprite[_index].scale;
         }
     }
+    
 }

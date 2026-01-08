@@ -9,9 +9,13 @@ public class IndexSprite
     public int index;
     public Image image;
     public Vector3 scale;
+    public int coins;
 }
 public class ScriptManager : MonoBehaviour
 {
+    [Header("—чЄт")]
+    public int countCoin;
+
     [Header("—сылка на UI")]
     [SerializeField] UI uI;
 
@@ -32,6 +36,37 @@ public class ScriptManager : MonoBehaviour
 
     [Header("—писок объектов с параметрами")]
     public List<IndexSprite> indexSprite = new List<IndexSprite>();
+    
+    [Header("ќбщие звуки")]
+    [SerializeField] AudioSource ballConnection;
+    [SerializeField] AudioSource ballDrop;
+    [SerializeField] AudioClip ballDropClip;
+    [SerializeField] AudioSource gameOver;
+
+    bool isCorutine = false;
+
+    public void BallConnection()
+    {
+        if (ballConnection == null) return;
+        if (ballConnection.isPlaying) return;
+        ballConnection.Play();
+    }
+    public void BallDrop()
+    {
+        if (ballDrop == null) return;
+        
+        //ballDrop.Play();
+        ballDrop.PlayOneShot(ballDropClip);
+
+    }
+    public void GameOver()
+    {
+        if (gameOver == null) return;
+        if (gameOver.isPlaying) return;
+        gameOver.Play();
+        uI.Pausa();
+        uI.GameOverPanel();
+    }
 
     private void Start()
     {
@@ -60,12 +95,17 @@ public class ScriptManager : MonoBehaviour
         {
             dragging = false;
             if (clonePref != null)
-            {
+            { 
+                BallDrop();
                 clonePref.transform.SetParent(null);
                 clonePref.GetComponent<Rigidbody2D>().simulated = true;
+                clonePref.GetComponent<CircleCollider2D>().isTrigger = false;
+               
             }
-            StopAllCoroutines();
-            StartCoroutine(RandomSprites());
+            if(!isCorutine)
+            {
+                StartCoroutine(RandomSprites());
+            }
         }
     }
 
@@ -75,13 +115,17 @@ public class ScriptManager : MonoBehaviour
         clonePref.transform.localScale = indexSprite[currentIndex].scale;
         clonePref.GetComponent<TriggerObject>()._sprite = indexSprite[currentIndex].image.sprite;
         clonePref.GetComponent<TriggerObject>()._index = indexSprite[currentIndex].index;
+        clonePref.GetComponent<TriggerObject>().bonus = indexSprite[currentIndex].coins;
         clonePref.GetComponent<Rigidbody2D>().simulated = false;
+        clonePref.GetComponent<CircleCollider2D>().isTrigger = true;
     }
     IEnumerator RandomSprites()
     {
-        currentIndex = Random.Range(0, 4);
+        isCorutine = true;
         yield return new WaitForSeconds(1f);
+        currentIndex = Random.Range(0, 4);
         SpriteCount();
+        isCorutine = false;
     }
     public void Distribution()
     {

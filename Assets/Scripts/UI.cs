@@ -8,8 +8,11 @@ public class UI : MonoBehaviour
 {
     [Header("Ссылки")]
     [SerializeField] ScriptManager scriptManager;
-    //[SerializeField] AudioListener audioListener;
-    
+
+    [Header("Визуализация счёта")]
+    [SerializeField] Text text;
+    [SerializeField] GameObject textObject;
+    [SerializeField] GameObject pointTextGameOver;
 
     [Header("Логические переменные")]
     [SerializeField] bool isPause = false;
@@ -19,7 +22,8 @@ public class UI : MonoBehaviour
     bool isActive;
 
     [Header("Свойство и настройка панели паузы")]
-    [SerializeField] GameObject panelPause;
+    public GameObject panelPause;
+    
     public float time;
    
 
@@ -27,11 +31,11 @@ public class UI : MonoBehaviour
     [SerializeField] GameObject buttonMenu;
     [SerializeField] GameObject buttonRestart;
     [SerializeField] GameObject buttonContinue;
+    [SerializeField] GameObject buttonSound;
 
     [Header("Настройка звука")]
     [SerializeField] AudioMixer audioMixer;
     [SerializeField] AudioSource music;
-    [SerializeField] AudioSource stack;
 
     private AudioMixerGroup musicGroup; 
     private AudioMixerGroup stackGroup;
@@ -49,6 +53,28 @@ public class UI : MonoBehaviour
         Pausa();   
     }
 
+    
+    void AccountVisibility()
+    {
+        if (text != null)
+        {
+            text.text = $"Счёт: {scriptManager.countCoin.ToString()}";
+        }
+    }
+    public void GameOverPanel()
+    {
+        if(buttonContinue != null && buttonRestart != null)
+        {
+            buttonRestart.transform.position = buttonContinue.transform.position;
+            buttonContinue.SetActive(false);
+            if(textObject != null && pointTextGameOver != null)
+            {
+                textObject.transform.SetParent(panelPause.transform);
+                textObject.transform.position = pointTextGameOver.transform.position;
+            }
+            
+        }
+    }
     void OneStrtAction()
     {
         if (buttonMenu == null || buttonRestart == null || buttonContinue == null) return;
@@ -71,6 +97,7 @@ public class UI : MonoBehaviour
         Time.timeScale = time;
         OrientationView();
         PanelActive();
+        AccountVisibility();
     }
     public void Pausa()
     {
@@ -117,10 +144,9 @@ public class UI : MonoBehaviour
         if (audioMixer == null) return;
         isMusic = !isMusic;
 
-        if(isMusic)
+        if (isMusic)
         {
             music.Play();
-            
         }
         if (!isMusic)
         {
@@ -133,11 +159,19 @@ public class UI : MonoBehaviour
         ishearing = !ishearing;
         if (ishearing)
         {
-            audioMixer.SetFloat("Main", 0f); 
+            audioMixer.SetFloat("Main", 0f);
+            if (buttonSound != null)
+            {
+                buttonSound.GetComponentInChildren<Text>().text = "Звук Вкл";
+            }
         }
         else
         {
-            audioMixer.SetFloat("Main", -80f); 
+            audioMixer.SetFloat("Main", -80f);
+            if (buttonSound != null)
+            {
+                buttonSound.GetComponentInChildren<Text>().text = "Звук Выкл";
+            }
         }
     }
     public void LoadScene()
