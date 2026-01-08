@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Music
   - GameOverTrigger
+  - Button(Sound)
+  - Button(Pausa)
+  - Button(Continue)
+  - Button(Restart)
+  - PanelPause
+  - TextCount
+  - CountPointGameOver
   layers:
   - Default
   - TransparentFX

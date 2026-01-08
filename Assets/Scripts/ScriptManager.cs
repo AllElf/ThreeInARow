@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -43,33 +44,16 @@ public class ScriptManager : MonoBehaviour
     [SerializeField] AudioClip ballDropClip;
     [SerializeField] AudioSource gameOver;
 
+    [Header("Настройка звука")]
+    [SerializeField] AudioMixer audioMixer;
+    [SerializeField] bool ishearing = true;
+
+
     bool isCorutine = false;
-
-    public void BallConnection()
-    {
-        if (ballConnection == null) return;
-        if (ballConnection.isPlaying) return;
-        ballConnection.Play();
-    }
-    public void BallDrop()
-    {
-        if (ballDrop == null) return;
-        
-        //ballDrop.Play();
-        ballDrop.PlayOneShot(ballDropClip);
-
-    }
-    public void GameOver()
-    {
-        if (gameOver == null) return;
-        if (gameOver.isPlaying) return;
-        gameOver.Play();
-        uI.Pausa();
-        uI.GameOverPanel();
-    }
 
     private void Start()
     {
+        audioMixer = Resources.Load<AudioMixer>("Main");
         currentIndex = Random.Range(0, 4);
         SpriteCount();
     }
@@ -95,18 +79,63 @@ public class ScriptManager : MonoBehaviour
         {
             dragging = false;
             if (clonePref != null)
-            { 
+            {
                 clonePref.transform.SetParent(null);
                 clonePref.GetComponent<Rigidbody2D>().simulated = true;
                 clonePref.GetComponent<CircleCollider2D>().isTrigger = false;
-               
+
             }
-            if(!isCorutine)
+            if (!isCorutine)
             {
                 StartCoroutine(RandomSprites());
             }
         }
     }
+    public void BallConnection()
+    {
+        if (ballConnection == null) return;
+        if (ballConnection.isPlaying) return;
+        ballConnection.Play();
+    }
+    public void BallDrop()
+    {
+        if (ballDrop == null) return;
+        
+        //ballDrop.Play();
+        ballDrop.PlayOneShot(ballDropClip);
+
+    }
+    public void Sound()
+    {
+        if (audioMixer == null) return;
+        ishearing = !ishearing;
+        if (ishearing)
+        {
+            audioMixer.SetFloat("Main", 0f);
+            if (uI.buttonSound != null)
+            {
+                uI.buttonSound.GetComponentInChildren<Text>().text = "Звук Вкл";
+            }
+        }
+        else
+        {
+            audioMixer.SetFloat("Main", -80f);
+            if (uI.buttonSound != null)
+            {
+                uI.buttonSound.GetComponentInChildren<Text>().text = "Звук Выкл";
+            }
+        }
+    }
+    public void GameOver()
+    {
+        if (gameOver == null) return;
+        if (gameOver.isPlaying) return;
+        gameOver.Play();
+        uI.Pausa();
+        uI.GameOverPanel();
+    }
+
+   
 
     public void SpriteCount()
     {

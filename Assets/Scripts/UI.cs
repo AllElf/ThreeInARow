@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
@@ -16,8 +14,7 @@ public class UI : MonoBehaviour
 
     [Header("Логические переменные")]
     [SerializeField] bool isPause = false;
-    [SerializeField] bool ishearing = true;
-    [SerializeField] bool isMusic = true;
+
 
     bool isActive;
 
@@ -31,29 +28,33 @@ public class UI : MonoBehaviour
     [SerializeField] GameObject buttonMenu;
     [SerializeField] GameObject buttonRestart;
     [SerializeField] GameObject buttonContinue;
-    [SerializeField] GameObject buttonSound;
+    public GameObject buttonSound;
 
-    [Header("Настройка звука")]
-    [SerializeField] AudioMixer audioMixer;
-    [SerializeField] AudioSource music;
 
-    private AudioMixerGroup musicGroup; 
-    private AudioMixerGroup stackGroup;
 
+    private void Awake()
+    {
+        ObjectFind();
+    }
     private void Start()
     {
-        audioMixer = Resources.Load<AudioMixer>("Main");
-        musicGroup = audioMixer.FindMatchingGroups("Music")[0]; 
-        stackGroup = audioMixer.FindMatchingGroups("Stack")[0];
-
         scriptManager = FindAnyObjectByType<ScriptManager>();
-        music = GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>();
         isActive = true;
         OneStrtAction();
         Pausa();   
     }
 
-    
+    void ObjectFind()
+    {
+        textObject = GameObject.FindGameObjectWithTag("TextCount");
+        text = textObject.GetComponent<Text>();
+        pointTextGameOver = GameObject.FindGameObjectWithTag("CountPointGameOver");
+        panelPause = GameObject.FindGameObjectWithTag("PanelPause");
+        buttonSound = GameObject.FindGameObjectWithTag("Button(Sound)");
+        buttonMenu = GameObject.FindGameObjectWithTag("Button(Pausa)");
+        buttonRestart = GameObject.FindGameObjectWithTag("Button(Restart)");
+        buttonContinue = GameObject.FindGameObjectWithTag("Button(Continue)");
+    }
     void AccountVisibility()
     {
         if (text != null)
@@ -139,41 +140,8 @@ public class UI : MonoBehaviour
 
     }
 
-    public void Music()
-    {
-        if (audioMixer == null) return;
-        isMusic = !isMusic;
-
-        if (isMusic)
-        {
-            music.Play();
-        }
-        if (!isMusic)
-        {
-            music.Stop();
-        }
-    }
-    public void Sound()
-    {
-        if(audioMixer == null) return;
-        ishearing = !ishearing;
-        if (ishearing)
-        {
-            audioMixer.SetFloat("Main", 0f);
-            if (buttonSound != null)
-            {
-                buttonSound.GetComponentInChildren<Text>().text = "Звук Вкл";
-            }
-        }
-        else
-        {
-            audioMixer.SetFloat("Main", -80f);
-            if (buttonSound != null)
-            {
-                buttonSound.GetComponentInChildren<Text>().text = "Звук Выкл";
-            }
-        }
-    }
+    
+    
     public void LoadScene()
     {
         SceneManager.LoadScene("SampleScene");
