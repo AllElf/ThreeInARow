@@ -2,17 +2,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class UI : MonoBehaviour
 {
     [Header("Ссылки")]
     [SerializeField] ScriptManager scriptManager;
-    [SerializeField] AudioListener audioListener;
-    [SerializeField] AudioSource music;
+    //[SerializeField] AudioListener audioListener;
+    
 
     [Header("Логические переменные")]
     [SerializeField] bool isPause = false;
+    [SerializeField] bool ishearing = true;
     [SerializeField] bool isMusic = true;
+
     bool isActive;
 
     [Header("Свойство и настройка панели паузы")]
@@ -24,12 +27,22 @@ public class UI : MonoBehaviour
     [SerializeField] GameObject buttonMenu;
     [SerializeField] GameObject buttonRestart;
     [SerializeField] GameObject buttonContinue;
-   
+
+    [Header("Настройка звука")]
+    [SerializeField] AudioMixer audioMixer;
+    [SerializeField] AudioSource music;
+    [SerializeField] AudioSource stack;
+
+    private AudioMixerGroup musicGroup; 
+    private AudioMixerGroup stackGroup;
 
     private void Start()
     {
+        audioMixer = Resources.Load<AudioMixer>("Main");
+        musicGroup = audioMixer.FindMatchingGroups("Music")[0]; 
+        stackGroup = audioMixer.FindMatchingGroups("Stack")[0];
+
         scriptManager = FindAnyObjectByType<ScriptManager>();
-        audioListener = FindAnyObjectByType<AudioListener>();
         music = GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>();
         isActive = true;
         OneStrtAction();
@@ -101,12 +114,13 @@ public class UI : MonoBehaviour
 
     public void Music()
     {
-        if (music == null) return;
+        if (audioMixer == null) return;
         isMusic = !isMusic;
 
         if(isMusic)
         {
             music.Play();
+            
         }
         if (!isMusic)
         {
@@ -115,8 +129,16 @@ public class UI : MonoBehaviour
     }
     public void Sound()
     {
-        if(audioListener == null) return;
-        audioListener.enabled = !audioListener.enabled;
+        if(audioMixer == null) return;
+        ishearing = !ishearing;
+        if (ishearing)
+        {
+            audioMixer.SetFloat("Main", 0f); 
+        }
+        else
+        {
+            audioMixer.SetFloat("Main", -80f); 
+        }
     }
     public void LoadScene()
     {

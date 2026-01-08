@@ -53,7 +53,7 @@ public class TriggerObject : MonoBehaviour
         if (!other) return;
 
         if (other._index != _index) return;
-        manager.Distribution();
+        //manager.Distribution();
         internalIndex = manager.countTrigger;
         if (other.internalIndex < internalIndex)
         {
